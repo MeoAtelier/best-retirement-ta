@@ -29,7 +29,7 @@ all: .o/district-health-board-2015 \
 
 .o/dhb-ta-overlap: .o/district-health-board-2015 .o/territorial-authority-2018-clipped-generalised
 
-.o/healthcare_professionals: .o/pop-dhb .o/healthcare_professionals_per100kpop
+.o/healthcare_professionals: .o/pop-dhb .o/healthcare_professionals_per100kpop .o/dhb-ta-overlap
 
 .o/%: analysis/shp/%.shp .o/db
 	$(psql) -c 'drop table if exists "$*" cascade'
