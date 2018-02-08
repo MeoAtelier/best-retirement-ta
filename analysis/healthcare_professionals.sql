@@ -72,6 +72,7 @@ SELECT ta2017_label
   , round(allied / p.value::numeric * 100000) as allied
 FROM healthcare_ta_nominal
 JOIN _pop p on lower(area) = lower(ta2017_label)
+WHERE ta2017_label not in ('Chatham Islands Territory')
 ;
 
 COMMIT;

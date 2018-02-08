@@ -13,7 +13,11 @@ all: .o/district-health-board-2015 \
 	.o/dhb-ta-overlap \
 	.o/healthcare_professionals_per100kpop \
 	.o/healthcare_professionals \
-	.o/2017_Areas_Table
+	.o/2017_Areas_Table \
+	.o/rates \
+	.o/dwellings \
+	.o/avg-rates
+	$(psql) -f analysis/export.sql
 
 
 .o/pop-%: analysis/population/load-%.sql analysis/population/%.csv .o/db
@@ -33,6 +37,8 @@ all: .o/district-health-board-2015 \
 .o/dhb-ta-overlap: .o/district-health-board-2015 .o/au2017_gv_clipped 
 
 .o/healthcare_professionals: .o/pop-dhb .o/healthcare_professionals_per100kpop .o/dhb-ta-overlap .o/pop-au
+
+.o/avg-rates: .o/rates .o/dwellings
 
 .o/%: analysis/shp/%.shp .o/db
 	$(psql) -c 'drop table if exists "$*" cascade'
