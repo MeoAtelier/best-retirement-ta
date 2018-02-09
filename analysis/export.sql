@@ -7,3 +7,5 @@
 
 \copy (select * from ta_sunshine) to 'analysis/results/sunshine.csv' with csv header
 
+\copy (select * from rank order by overall) to 'analysis/results/rank.csv' with csv header
+

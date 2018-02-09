@@ -19,7 +19,8 @@ all: .o/district-health-board-2015 \
 	.o/avg-rates \
 	.o/over-65 \
 	.o/sunshine \
-	.o/ta-sunshine
+	.o/ta-sunshine \
+	.o/rank
 	$(psql) -f analysis/export.sql
 
 
