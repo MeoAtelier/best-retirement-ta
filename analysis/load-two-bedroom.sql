@@ -14,14 +14,8 @@ CREATE TABLE two_bedroom (
 
 \copy two_bedroom from 'analysis/two-bedroom.csv' with csv header
 
-WITH _a AS (
-  DELETE FROM two_bedroom
-  WHERE name ~ 'Auckland.*'
-  RETURNING *
-)
-INSERT INTO two_bedroom (name, total_properties, median_value, total_sales_in_2017, median_sales_price)
-SELECT 'Auckland', sum(total_properties), round(avg(median_value)), sum(total_sales_in_2017), round(avg(median_sales_price))
-FROM _a;
+DELETE FROM two_bedroom
+WHERE name ~ 'Auckland - .*';
 
 UPDATE two_bedroom
 SET name = 'Lower Hutt City'

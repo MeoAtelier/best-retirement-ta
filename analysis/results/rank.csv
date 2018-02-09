@@ -1,67 +1,67 @@
 ta,rates,sunshine,over65,health,property,overall
-Napier City,1,5,6,27,32,1
-Horowhenua District,3,41,5,32,5,2
-Thames-Coromandel District,19,20,4,2,43,3
-Whangarei District,4,22,11,25,28,4
-Hastings District,11,26,22,26,6,5
-Marlborough District,36,3,3,41,10,6
-Waimakariri District,21,25,19,8,32,7
-Matamata-Piako District,18,12,24,1,50,7
-Hamilton City,33,18,32,2,27,9
-Kapiti Coast District,7,46,1,20,39,10
-Tauranga City,17,4,2,54,38,11
-Christchurch City,38,32,23,10,13,12
-South Waikato District,29,19,54,2,19,13
-New Plymouth District,23,28,14,50,9,14
-Waipa District,24,24,25,2,53,15
-Far North District,46,15,9,24,35,16
-Timaru District,8,48,6,62,8,17
-Ashburton District,6,55,43,12,23,18
-Buller District,15,57,36,14,21,19
-Whanganui District,49,45,12,36,1,19
-Lower Hutt City,25,31,30,37,25,21
-Palmerston North City,31,44,36,34,4,22
-Gisborne District,59,6,47,30,7,22
-Invercargill City,2,65,33,47,2,22
-Nelson City,52,2,16,40,41,25
-Masterton District,15,38,20,64,17,26
-Hauraki District,60,14,15,17,49,27
-Upper Hutt City,5,43,47,39,23,28
-Dunedin City,27,62,20,45,3,28
-Tasman District,50,9,6,42,56,30
-Wellington City,64,17,34,13,37,31
-Kaikoura District,30,20,40,9,66,31
-Waitaki District,41,52,13,47,14,33
-Manawatu District,28,37,40,35,28,34
-Rotorua District,45,11,34,60,18,34
-Auckland,62,16,27,29,35,36
-Hurunui District,20,33,43,18,57,37
-Grey District,22,59,50,16,26,38
-Kaipara District,48,27,18,23,61,39
-Central Otago District,34,36,16,45,47,40
-Opotiki District,9,10,52,54,54,41
-Western Bay of Plenty District,51,7,9,54,59,42
-Tararua District,39,54,46,32,11,43
-South Taranaki District,35,29,54,53,12,44
-Waimate District,13,42,28,63,39,45
-Whakatane District,40,8,42,54,44,46
-Waikato District,44,23,49,22,55,47
-Westland District,14,63,60,18,42,48
-Otorohanga District,37,39,66,6,51,49
-Taupo District,61,34,26,59,21,50
-Selwyn District,26,50,58,10,57,50
-Central Hawke's Bay District,55,35,38,31,44,52
-Gore District,32,61,38,43,30,53
-Wairoa District,54,12,60,28,52,54
-South Wairarapa District,11,40,28,64,64,55
-Kawerau District,63,1,51,54,46,56
-Rangitikei District,57,47,45,37,31,57
-Porirua City,58,30,57,14,60,58
-Ruapehu District,56,60,62,21,20,58
-Waitomo District,66,53,65,6,34,60
-Clutha District,53,64,52,47,16,61
-Southland District,47,66,54,52,15,62
-Carterton District,43,50,30,64,62,63
-Stratford District,42,49,59,51,48,63
-Mackenzie District,10,58,64,61,65,65
-Queenstown-Lakes District,65,56,63,44,63,66
+Napier City,1,5,12,29,40,1
+Auckland,62,16,4,25,1,2
+Thames-Coromandel District,19,20,2,5,35,3
+Kapiti Coast District,7,46,1,19,31,4
+Buller District,15,57,37,1,6,5
+Tauranga City,17,4,3,54,21,6
+Horowhenua District,3,41,5,33,13,7
+Christchurch City,38,32,6,11,4,8
+Whangarei District,4,22,9,22,28,9
+Wellington City,64,17,17,4,8,10
+Marlborough District,36,3,7,32,27,11
+Hamilton City,33,18,22,5,11,12
+Matamata-Piako District,18,12,35,3,54,13
+South Waikato District,29,19,58,5,12,14
+Invercargill City,2,65,38,47,10,15
+Hastings District,11,26,25,28,16,16
+Whanganui District,49,45,20,41,2,17
+Nelson City,52,2,26,31,44,18
+Grey District,22,59,51,2,29,19
+Dunedin City,27,62,12,45,5,20
+Kawerau District,63,1,46,54,33,21
+Waipa District,24,24,34,5,53,22
+Waimakariri District,21,25,27,9,45,23
+Timaru District,8,48,12,62,22,24
+Hauraki District,60,14,8,23,52,25
+Gisborne District,59,6,48,27,20,26
+Far North District,46,15,15,21,43,27
+Ashburton District,6,55,47,15,41,28
+Lower Hutt City,25,31,24,39,14,29
+Tararua District,39,54,49,33,3,30
+New Plymouth District,23,28,19,51,17,31
+Kaikoura District,30,20,29,10,66,32
+Opotiki District,9,10,52,54,50,33
+Tasman District,50,9,16,36,55,34
+Palmerston North City,31,44,32,37,9,35
+Upper Hutt City,5,43,50,40,39,36
+Western Bay of Plenty District,51,7,18,54,57,37
+Wairoa District,54,12,60,30,19,38
+Westland District,14,63,61,13,32,39
+Waitomo District,66,53,65,16,7,40
+Central Otago District,34,36,10,45,51,41
+Hurunui District,20,33,41,18,58,42
+Waimate District,13,42,23,63,38,43
+Waitaki District,41,52,11,47,30,44
+Kaipara District,48,27,21,20,63,45
+Rotorua District,45,11,33,60,36,46
+Masterton District,15,38,30,64,34,47
+Whakatane District,40,8,45,54,49,48
+Selwyn District,26,50,55,11,59,49
+South Wairarapa District,11,40,28,64,65,50
+South Taranaki District,35,29,57,53,18,51
+Waikato District,44,23,42,26,56,52
+Manawatu District,28,37,43,38,42,53
+Otorohanga District,37,39,66,16,48,54
+Porirua City,58,30,54,14,60,55
+Gore District,32,61,39,43,25,56
+Rangitikei District,57,47,44,42,23,57
+Central Hawke's Bay District,55,35,40,35,46,58
+Clutha District,53,64,53,47,15,59
+Ruapehu District,56,60,64,24,26,60
+Mackenzie District,10,58,63,61,64,61
+Taupo District,61,34,36,59,37,62
+Southland District,47,66,56,50,24,63
+Carterton District,43,50,31,64,62,64
+Stratford District,42,49,59,52,47,65
+Queenstown-Lakes District,65,56,62,44,61,66
