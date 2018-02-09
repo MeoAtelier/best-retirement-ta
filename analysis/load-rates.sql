@@ -44,5 +44,5 @@ SET ta = 'Wanganui District' WHERE ta = 'Whanganui District Council';
 UPDATE total_rates
 SET ta = 'Lower Hutt City' WHERE ta = 'Hutt City Council';
 
-
 COMMIT;
+

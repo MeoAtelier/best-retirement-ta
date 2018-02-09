@@ -16,9 +16,17 @@ all: .o/district-health-board-2015 \
 	.o/2017_Areas_Table \
 	.o/rates \
 	.o/dwellings \
-	.o/avg-rates
+	.o/avg-rates \
+	.o/over-65 \
+	.o/sunshine \
+	.o/ta-sunshine
 	$(psql) -f analysis/export.sql
 
+
+.o/sunshine: analysis/sunshine/sunshine-hours-annual-average-1972-2013_1.tif .o/db
+	$(psql) -c 'DROP TABLE IF EXISTS sunshine CASCADE;'
+	raster2pgsql -s 2193 $< sunshine | $(psql)
+	touch $@
 
 .o/pop-%: analysis/population/load-%.sql analysis/population/%.csv .o/db
 	$(psql) -f $<
@@ -39,6 +47,10 @@ all: .o/district-health-board-2015 \
 .o/healthcare_professionals: .o/pop-dhb .o/healthcare_professionals_per100kpop .o/dhb-ta-overlap .o/pop-au
 
 .o/avg-rates: .o/rates .o/dwellings
+
+.o/over-65: .o/pop-ta
+
+.o/ta-sunshine: .o/sunshine
 
 .o/%: analysis/shp/%.shp .o/db
 	$(psql) -c 'drop table if exists "$*" cascade'
