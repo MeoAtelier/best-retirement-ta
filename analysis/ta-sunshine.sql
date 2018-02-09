@@ -1,4 +1,6 @@
 BEGIN;
+
+
 drop materialized view if exists ta_sunshine cascade;
 create materialized view ta_sunshine as 
 with _s as (

@@ -5,4 +5,7 @@ CREATE TABLE dwellings (ta text, count numeric);
 
 \copy dwellings from 'analysis/dwellings.csv' DELIMITER ','
 
+UPDATE dwellings
+SET ta = 'Whanganui District' where ta = 'Wanganui District';
+
 COMMIT;

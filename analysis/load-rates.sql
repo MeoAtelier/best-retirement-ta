@@ -39,7 +39,7 @@ UPDATE total_rates
 SET ta = 'Central Hawke''s Bay District' WHERE ta = 'Central Hawkes Bay District Council';
 
 UPDATE total_rates
-SET ta = 'Wanganui District' WHERE ta = 'Whanganui District Council';
+SET ta = 'Whanganui District' WHERE ta = 'Whanganui District Council';
 
 UPDATE total_rates
 SET ta = 'Lower Hutt City' WHERE ta = 'Hutt City Council';
