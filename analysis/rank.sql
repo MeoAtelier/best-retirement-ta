@@ -26,7 +26,7 @@ create or replace view rank as
 with _inner AS (
 select r.ta
   , rank() over (order by avg_rates) as rates
-  , rank() over (order by mean) as sunshine
+  , rank() over (order by mean desc) as sunshine
   , o.rank as over65
   , h.rank as health
 from rates r
