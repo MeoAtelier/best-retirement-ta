@@ -22,6 +22,18 @@ with _inner as (
 select ta, rank() over (order by pop + pc)
 from _inner;
 
+create or replace view property_rank as
+with _inner as (
+  select name as ta
+  , rank() over (order by total_sales_in_2017 desc) as sales
+  , rank() over (order by median_sales_price) as price
+  , rank() over (order by total_properties desc) as total
+  , rank() over (order by median_value) as value
+  FROM two_bedroom
+)
+SELECT *, rank() over (order by sales + price + total + value)
+FROM _inner;
+
 create or replace view rank as
 with _inner AS (
 select r.ta
@@ -29,6 +41,7 @@ select r.ta
   , rank() over (order by mean desc) as sunshine
   , o.rank as over65
   , h.rank as health
+  , p.rank as property
 from rates r
 left join ta_sunshine s
   on r.ta = s.ta2017_nam
@@ -36,8 +49,10 @@ left join over65_rank o
   on lower(r.ta) = lower(o.ta)
 left join health_rank h
   on r.ta = h.ta
+left join property_rank p
+  on r.ta = p.ta
 )
-select *, rank() over (order by rates + sunshine + over65 + health) as overall
+select *, rank() over (order by rates + sunshine + over65 + health + property) as overall
 from _inner
 ;
 

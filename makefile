@@ -20,7 +20,8 @@ all: .o/district-health-board-2015 \
 	.o/over-65 \
 	.o/sunshine \
 	.o/ta-sunshine \
-	.o/rank
+	.o/rank \
+	.o/two-bedroom
 	$(psql) -f analysis/export.sql
 
 
@@ -52,6 +53,8 @@ all: .o/district-health-board-2015 \
 .o/over-65: .o/pop-ta
 
 .o/ta-sunshine: .o/sunshine
+
+.o/rank: .o/avg-rates .o/ta-sunshine .o/over-65 .o/healthcare_professionals .o/two-bedroom
 
 .o/%: analysis/shp/%.shp .o/db
 	$(psql) -c 'drop table if exists "$*" cascade'
