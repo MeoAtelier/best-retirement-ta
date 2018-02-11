@@ -1,0 +1,67 @@
+---
+title: "New Zeland's Best Retirement Locations"
+author: "New Zeland Herald, Chris Knox (chris.knox@nzherald.co.nz)"
+date: "February 2018"
+output:
+  html_document:
+    code_folding: show
+    echo: TRUE
+    warning: FALSE
+    message: FALSE
+    theme: sandstone
+    toc: yes
+    toc_float: 
+      collapsed: false
+      smooth_scroll: false
+subtitle: Preprocessing
+---
+
+```{r setup, include=FALSE,cache=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+library(RPostgreSQL)
+drv <- dbDriver("PostgreSQL")
+db <- dbConnect(drv, dbname='retirement')
+```
+
+```{r, echo=FALSE,cache=TRUE}
+project_name <- "best-retirement-ta"
+r_version <- "3.4.3"
+```
+
+## Intro
+
+This is a playful analysis that attempts to rank New Zealand's Territorial Authorities based
+on which one is the best location to retire.
+
+
+## Dependencies
+
+### Nix
+
+    curl https://nixos.org/nix/install | sh
+
+## Data loading
+
+```{sql, connection=db,cache=TRUE}
+DROP MATERIALIZED VIEW IF EXISTS dhb_au_overlap CASCADE;
+
+CREATE MATERIALIZED VIEW dhb_au_overlap AS
+WITH _a AS (
+SELECT 
+    dhb2015_na
+  , au2017 || ' ' || au2017_nam as au
+  , round((st_area(st_intersection(au.geom, dhb.geom)) / (au.area_sq_km * 1e6))::numeric, 3) as overlap
+FROM au2017_gv_clipped au
+INNER JOIN "district-health-board-2015" dhb
+ON ST_Intersects(au.geom, dhb.geom)
+WHERE dhb2015_na != 'Area outside District Health Board'
+)
+SELECT *, rank() over (partition by au order by overlap)
+FROM _a
+where overlap > 0;
+
+SELECT * FROM dhb_au_overlap
+;
+```
+
+

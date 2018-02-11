@@ -2,9 +2,33 @@
 db := retirement
 psql := psql -d $(db) --set ON_ERROR_STOP=1
 
-.PHONY: all
+.PHONY: all 
 
-all: .o/district-health-board-2015 \
+all: analysis/main.html
+
+.o/gis: .o/sunshine \
+	.o/ta2017_gv_clipped \
+	.o/district-health-board-2015 \
+	.o/au2017_gv_clipped 
+	touch $@
+
+.o/load: .o/gis \
+	.o/pop-ta \
+	.o/pop-au \
+	.o/pop-dhb \
+	.o/healthcare_professionals_per100kpop \
+	.o/2017_Areas_Table \
+	.o/rates \
+	.o/dwellings \
+	.o/two-bedroom
+	rm -rf analysis/main_cache
+	touch $@
+
+
+analysis/main.html: analysis/main.Rmd .o/load
+	Rscript -e 'library(rmarkdown); rmarkdown::render("analysis/main.Rmd", "html_document")' --vanilla
+
+orig: .o/district-health-board-2015 \
 	.o/ta2017_gv_clipped \
 	.o/au2017_gv_clipped \
 	.o/pop-ta \
