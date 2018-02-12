@@ -11,7 +11,7 @@ WITH _r AS (
    , rank() over (order by allied desc) as allied
   FROM healthcare_ta_percap
 )
-select ta2017_label as ta, rank() over (order by all_staff * 2 + senior_medical + junior_medical + care_support + nurses + allied)
+select ta2017_label as ta, rank() over (order by (all_staff + senior_medical + junior_medical + care_support + nurses + allied)::numeric / 6)
 FROM _r;
 
 create or replace view over65_rank as
@@ -31,7 +31,7 @@ with _inner as (
   , rank() over (order by median_value) as value
   FROM two_bedroom
 )
-SELECT *, rank() over (order by sales + price + total + value)
+SELECT *, rank() over (order by (sales + price + total + value)::numeric / 4)
 FROM _inner;
 
 create or replace view rank as
@@ -39,6 +39,7 @@ with _inner AS (
 select r.ta
   , rank() over (order by avg_rates) as rates
   , rank() over (order by mean desc) as sunshine
+  , rank() over (order by burglary) as burglary
   , o.rank as over65
   , h.rank as health
   , p.rank as property
@@ -51,8 +52,10 @@ left join health_rank h
   on r.ta = h.ta
 left join property_rank p
   on r.ta = p.ta
+left join crime_percap c
+  ON lower(r.ta) = lower(c.ta)
 )
-select *, rank() over (order by rates + sunshine + over65 + health + property) as overall
+select *, rank() over (order by (rates + sunshine + over65 + health + property + burglary)::numeric / 6) as overall
 from _inner
 ;
 

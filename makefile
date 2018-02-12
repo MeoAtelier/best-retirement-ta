@@ -20,7 +20,8 @@ all: analysis/main.html
 	.o/2017_Areas_Table \
 	.o/rates \
 	.o/dwellings \
-	.o/two-bedroom
+	.o/two-bedroom \
+	.o/crime
 	rm -rf analysis/main_cache
 	touch $@
 
@@ -45,7 +46,8 @@ orig: .o/district-health-board-2015 \
 	.o/sunshine \
 	.o/ta-sunshine \
 	.o/rank \
-	.o/two-bedroom
+	.o/two-bedroom \
+	.o/crime
 	$(psql) -f analysis/export.sql
 
 
@@ -78,7 +80,9 @@ orig: .o/district-health-board-2015 \
 
 .o/ta-sunshine: .o/sunshine
 
-.o/rank: .o/avg-rates .o/ta-sunshine .o/over-65 .o/healthcare_professionals .o/two-bedroom
+.o/crime-percapita: .o/crime
+
+.o/rank: .o/avg-rates .o/ta-sunshine .o/over-65 .o/healthcare_professionals .o/two-bedroom .o/crime-percapita
 
 .o/%: analysis/shp/%.shp .o/db
 	$(psql) -c 'drop table if exists "$*" cascade'
