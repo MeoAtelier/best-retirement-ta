@@ -10,6 +10,7 @@ import           Data.Colour.SRGB
 import           Data.List                     (groupBy)
 import           Data.Monoid
 import           Database.PostgreSQL.Simple
+import           System.FilePath               ((</>))
 import           Text.Blaze                    (stringValue)
 import           Text.Blaze.Renderer.Utf8      (renderMarkup)
 import           Text.Blaze.Svg11              (mkPath, translate, (!))
@@ -64,7 +65,7 @@ main = do
   doc property propertyColor "property" ta
   where
     doc acc col fn a =
-      BL.writeFile (fn ++ ".svg") $
+      BL.writeFile ("print" </> fn ++ ".svg") $
       renderMarkup $
       S.docTypeSvg ! A.version "1.1" ! A.width "500" ! A.height "800" !
       A.viewbox "1088000 -6160000 1001950 1446320" $

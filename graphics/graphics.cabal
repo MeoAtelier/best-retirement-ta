@@ -26,6 +26,7 @@ executable graphics
                      , bytestring
                      , colour
                      , double-conversion
+                     , filepath
                      , palette
                      , postgresql-simple
   -- hs-source-dirs:      
