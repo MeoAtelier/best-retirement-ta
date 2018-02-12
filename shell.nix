@@ -1,5 +1,17 @@
 let
-  pkgs = import <nixpkgs> {};
+  config = {
+    packageOverrides = pkgs: rec {
+      haskellPackages = pkgs.haskellPackages.override {
+        overrides = haskellPackagesNew: haskellPackagesOld: rec {
+          retirement-graphics =
+            haskellPackagesNew.callPackage ./graphics/default.nix { };
+        };
+      };
+    };
+  };
+
+
+  pkgs = import <nixpkgs> {inherit config; };
   stdenv = pkgs.stdenv;
 
   haskellEnv = pkgs.haskell.packages.ghc822.ghcWithPackages
@@ -20,6 +32,7 @@ in with pkgs; {
       RPostgreSQL
       codetools
       haskellEnv
+      pkgs.haskellPackages.retirement-graphics
       gnumake
       postgresql ];
   };
