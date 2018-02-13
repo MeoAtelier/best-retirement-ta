@@ -1,0 +1,16 @@
+{
+  "name": "react-scripts-purescript",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "purescript-console": "^3.0.0",
+    "purescript-eff": "^3.1.0",
+    "purescript-react": "^5.1.0",
+    "purescript-react-dom": "^5.0.0"
+  }
+}

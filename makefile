@@ -49,6 +49,7 @@ orig: .o/district-health-board-2015 \
 	.o/two-bedroom \
 	.o/crime
 	$(psql) -f analysis/export.sql
+	graphics
 
 
 .o/sunshine: analysis/sunshine/sunshine-hours-annual-average-1972-2013_1.tif .o/db

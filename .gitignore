@@ -2,3 +2,4 @@
 main_cache
 print/*.svg
 dist
+bower_components
