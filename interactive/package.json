@@ -1,18 +1,27 @@
 {
   "name": "interactive",
+  "homepage": "http://s3.newsapps.nz/best-retirement-area/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "create-react-class": "^15.6.2",
+    "lodash": "^4.17.5",
+    "material-design-icons": "^3.0.1",
+    "material-ui": "^0.20.0",
+    "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-scripts-purescript": "0.0.13"
+    "react-scripts-purescript": "0.0.13",
+    "typeface-roboto": "^0.0.54"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "aws --region ap-southeast-2 s3 cp build/ s3://s3.newsapps.nz/best-retirement-area --acl=public-read --recursive --cache-control max-age=60,public",
+    "dep": "npm-run-all clean build deploy",
+    "clean": "rm -rf build"
   },
   "devDependencies": {
     "purs-loader": "^3.1.2"

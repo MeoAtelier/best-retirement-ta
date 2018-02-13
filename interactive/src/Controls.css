@@ -1,0 +1,8 @@
+.controls {
+  display: flex;
+  height: 100px;
+  margin: 0 auto 30px auto;
+  padding: 0 30px;
+  max-width: 600px;
+  justify-content: space-between;
+}
