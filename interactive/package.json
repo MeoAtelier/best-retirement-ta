@@ -5,12 +5,14 @@
   "private": true,
   "dependencies": {
     "create-react-class": "^15.6.2",
+    "d3-ease": "^1.0.3",
     "lodash": "^4.17.5",
     "material-design-icons": "^3.0.1",
     "material-ui": "^0.20.0",
     "npm-run-all": "^4.1.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-move": "^2.7.0",
     "react-scripts-purescript": "0.0.13",
     "typeface-roboto": "^0.0.54"
   },

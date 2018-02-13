@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Animate from 'react-move/Animate';
+import { easeExpOut } from 'd3-ease';
 
 const scale = (angle, val) => `rotate(${angle}),scale(${val},${val})`
 
@@ -11,18 +13,27 @@ const petal = (color, angle, val, w) => {
   </g>
 )}
 
-const flower = ({property, rates, burglary, name, sunshine, medical, population}, w, i) => (
-  <g key={name} transform={`scale(0.6,0.6),translate(${(i % 6) * 260 + 120},${300 * Math.floor(i/6) + 150})`}>
-    {petal("#7F2222", 0, rates, w[0])}
-    {petal("#A05D43", 60, sunshine, w[1])}
-    {petal("#F3F396", 120, burglary, w[2])}
-    {petal("#98DA7D", 180, medical, w[3])}
-    {petal("#5188AE", 240, population, w[4])}
-    {petal("#172074", 300, property, w[5])}
-    <circle cx="0" cy="0" r="15" fill="#CCC" />
-    <text x="0" y="140" textAnchor="middle" fontSize="20px">{name}</text>
-  </g>
-)
+const flower = ({property, rates, burglary, name, sunshine, medical, population}, w, i) => {
+  const x0 = (i % 6) * 260 + 120;
+  const y0 = 300 * Math.floor(i/6) + 150;
+  return (
+    <Animate key={name}
+      start={() => ({x:x0, y:y0})}
+      update={() => ({x:[x0], y:[y0], timing: {ease: easeExpOut, duration:2000 }})}
+    >
+      {({x,y}) => (
+    <g transform={`scale(0.6,0.6),translate(${x},${y})`}>
+      {petal("#7F2222", 0, rates, w[0])}
+      {petal("#A05D43", 60, sunshine, w[1])}
+      {petal("#F3F396", 120, burglary, w[2])}
+      {petal("#98DA7D", 180, medical, w[3])}
+      {petal("#5188AE", 240, population, w[4])}
+      {petal("#172074", 300, property, w[5])}
+      <circle cx="0" cy="0" r="15" fill="#CCC" />
+      <text x="0" y="140" textAnchor="middle" fontSize="20px">{name}</text>
+    </g>)}
+  </Animate>
+)}
 
 const Ranking = ({ ranking, weights }) => {
   return (
