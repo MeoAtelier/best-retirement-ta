@@ -31,5 +31,15 @@ select r.*, ST_AsSvg(geom)
 from rank r
 inner join ta2017_gv_clipped
   on ta = ta2017_nam
+order by overall
+;
+|]
+
+taNoGeom =
+  [sql|
+select r.*, ''::text
+from rank r
+inner join ta2017_gv_clipped
+  on ta = ta2017_nam
 ;
 |]

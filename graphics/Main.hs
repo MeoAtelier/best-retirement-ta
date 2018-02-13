@@ -52,6 +52,30 @@ geo (n, g, c) =
   S.path ! A.id_ (stringValue n) ! A.d (stringValue g) !
   A.fill (stringValue $ sRGB24show c)
 
+flower ta = do
+  let s1 = scl 0 $ 1 - ((fromIntegral $ rates ta) / 100)
+      s2 = scl 60 $ 1 - ((fromIntegral $ sunshine ta) / 100)
+      s3 = scl 120 $ 1 - ((fromIntegral $ burglary ta) / 100)
+      s4 = scl 180 $ 1 - ((fromIntegral $ medical ta) / 100)
+      s5 = scl 240 $ 1 - ((fromIntegral $ population ta) / 100)
+      s6 = scl 300 $ 1 - ((fromIntegral $ property ta) / 100)
+  S.g ! A.transform s1 $ petal "#7F2222"
+  S.g ! A.transform s2 $ petal "#A05D43"
+  S.g ! A.transform s3 $ petal "#F3F396"
+  S.g ! A.transform s4 $ petal "#98DA7D"
+  S.g ! A.transform s5 $ petal "#5188AE"
+  S.g ! A.transform s6 $ petal "#172074"
+  S.circle ! A.cx "0" ! A.cy "0" ! A.r "15" ! A.fill "#CCC"
+  S.text_ ! A.x "0" ! A.y "140" ! A.textAnchor "middle" ! A.fontSize "20px" $
+    (S.string $ name ta)
+  where
+    petal f = do
+      S.path ! A.fill f ! A.d "M -12 -100 C -12 -120, 12 -120, 12 -100"
+      S.path ! A.fill f ! A.d "M -12 -101 C -12 20, 12 20, 12 -101"
+    scl r s =
+      stringValue $
+      "rotate(" ++ show r ++ "),scale(" ++ show s ++ "," ++ show s ++ ")"
+
 main :: IO ()
 main = do
   conn <- connectPostgreSQL "dbname=retirement"
@@ -63,10 +87,23 @@ main = do
   doc population populationColor "population" ta
   doc medical medicalColor "medical" ta
   doc property propertyColor "property" ta
+  BL.writeFile ("print" </> "flower.svg") $
+    renderMarkup $
+    S.docTypeSvg ! A.version "1.1" ! A.width "1000" ! A.height "2000" $ do
+      forM_
+        (zip ta ([0 ..] :: [Int]))
+        (\(y, i) ->
+           S.g ! A.id_ (stringValue $ name y) !
+           A.transform
+             (stringValue $
+              "scale(0.6,0.6),translate(" ++
+              show ((i `mod` 6) * 260 + 120) ++
+              "," ++ show (300 * (floor (fromIntegral i / 6)) + 150) ++ ")") $
+           flower y)
   where
     doc acc col fn a =
       BL.writeFile ("print" </> fn ++ ".svg") $
       renderMarkup $
       S.docTypeSvg ! A.version "1.1" ! A.width "500" ! A.height "800" !
       A.viewbox "1088000 -6160000 1001950 1446320" $
-      S.g $ forM_ (map (colorMap acc col) a) geo
+      forM_ (map (colorMap acc col) a) geo
