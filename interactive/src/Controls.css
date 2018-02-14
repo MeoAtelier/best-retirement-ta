@@ -1,8 +1,48 @@
 .controls {
-  display: flex;
-  height: 100px;
-  margin: 0 auto 30px auto;
-  padding: 0 30px;
+  margin: 0 auto ;
+  padding: 20px 30px;
   max-width: 600px;
-  justify-content: space-between;
 }
+
+.labels,
+.sliders {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sliders > div,
+.labels > div {
+  width: 12.5%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sliders-header,
+.sliders-footer {
+  margin: 10px auto;
+  color: #666;
+}
+
+
+.control-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.slider-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border-radius: 15px;
+  height: 150px;
+  width: 32px;
+}
+
+.slider-wrapper > div:last-child {
+  height: 100px;
+}
+

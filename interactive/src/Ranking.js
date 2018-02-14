@@ -24,8 +24,8 @@ const flower = ({property, rates, burglary, name, sunshine, medical, population}
       {({x,y}) => (
     <g transform={`scale(0.6,0.6),translate(${x},${y})`}>
       {petal("#7F2222", 0, rates, w[0])}
-      {petal("#A05D43", 60, sunshine, w[1])}
-      {petal("#F3F396", 120, burglary, w[2])}
+      {petal("#F3F396", 60, sunshine, w[1])}
+      {petal("#A05D43", 120, burglary, w[2])}
       {petal("#98DA7D", 180, medical, w[3])}
       {petal("#5188AE", 240, population, w[4])}
       {petal("#172074", 300, property, w[5])}
