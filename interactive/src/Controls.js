@@ -12,34 +12,34 @@ const labels = [ "Low rates", "High sunshine", "Low burglary", "Medical staff",
 
 const Controls = ({ changeWeight, weights, sortTAs }) => (
   <div className="controls">
+    <div className="sliders-header">More Important</div>
     <div className="labels">
       {labels.map(l => (
         <div className="control-wrapper" key={l}>
           <div style={{paddingBottom: "15px"}}>{l}</div>
         </div>))}
       </div>
-        <div className="sliders-header">More Important</div>
       <div className="sliders">
         {weights.map((w,i) => (
           <div key={i} >
-          <div className="slider-wrapper" style={{backgroundColor: colors[i]}}>
-            <Slider
-              sliderStyle={{selectionColor: colors[i]}}
-              axis="y"
-              min={0}
-              max={2}
-              value={w}
-              onDragStop={sortTAs}
-              onChange={(e,v) => changeWeight(i, v)}
-            />
-          </div>
+            <div className="slider-wrapper" style={{backgroundColor: colors[i]}}>
+              <Slider
+                sliderStyle={{selectionColor: colors[i]}}
+                axis="y"
+                min={0}
+                max={2}
+                value={w}
+                onDragStop={sortTAs}
+                onChange={(e,v) => changeWeight(i, v)}
+              />
+            </div>
           </div>
         ))}
       </div>
-        <div className="sliders-footer">Less Important</div>
+      <div className="sliders-footer">Less Important</div>
     </div>
 
-      )
+)
 
 Controls.propTypes = {
   changeWeight: PropTypes.func.isRequired,

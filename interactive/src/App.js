@@ -5,6 +5,7 @@ import ReactResizeDetector from 'react-resize-detector';
 import './App.css';
 import Ranking from './Ranking';
 import Controls from './Controls';
+import Map from './Map';
 
 import ranking from './ranking-data.json';
 
@@ -50,6 +51,7 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div className="App">
+          <Map ranking={sorted} />
           <Controls changeWeight={this.changeWeight} weights={weights} sortTAs={this.sortTAs} />
           <Ranking ranking={sorted} weights={weights} gridWidth={gridWidth} />
           <ReactResizeDetector handleWidth onResize={this._onResize} />
