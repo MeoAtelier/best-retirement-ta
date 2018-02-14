@@ -39,3 +39,7 @@
   flex: 1 1 440px;
   max-width: 700px;
 }
+.ranking {
+  display: flex;
+  justify-content: center;
+}

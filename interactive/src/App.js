@@ -78,8 +78,8 @@ class App extends Component {
                   <li>The average annual sunshine between 1973 and 2013 </li>
                   <li>The number of DHB staff per capita </li>
                 </ul>
-              <p>Each area was ranked according to these criteria and then the average rank across the 6 criteria was used to calculate the overall rank.</p>
-              <p>The overall ranks are shown on the map, and the flower-like visual shows how each area ranked across the 5 categories.</p>
+              <p>Each area was ranked according to these criteria and then the average rank across the six criteria was used to calculate the overall rank.</p>
+              <p>The overall ranks are shown on the map, and the flower-like visual shows how each area ranked across the six categories.</p>
               <p>Use the sliders to increase or decrease the importance of a category and see how the rankings change.</p>
             </div>
             <Map ranking={sorted} width={width} />

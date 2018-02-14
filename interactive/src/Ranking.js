@@ -14,7 +14,7 @@ const petal = (color, angle, val, w) => {
 )}
 
 const flower = ({property, rates, burglary, name, sunshine, medical, population}, w, gridWidth, i) => {
-  const x0 = (i % gridWidth) * 260 + 120;
+  const x0 = (i % gridWidth) * 260 + 130;
   const y0 = 300 * Math.floor(i/gridWidth) + 150;
   return (
     <Animate key={name}
