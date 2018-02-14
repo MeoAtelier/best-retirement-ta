@@ -5638,6 +5638,12 @@ react-move@^2.7.0:
     d3-interpolate "^1.1.6"
     d3-timer "^1.0.4"
 
+react-resize-detector@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-1.1.0.tgz#4a9831fa3caad32230478dd0185cbd2aa91a5ebf"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-scripts-purescript@0.0.13:
   version "0.0.13"
   resolved "https://registry.yarnpkg.com/react-scripts-purescript/-/react-scripts-purescript-0.0.13.tgz#9ed11b32ed6e7aa5428a82313b9e5f544ff30251"

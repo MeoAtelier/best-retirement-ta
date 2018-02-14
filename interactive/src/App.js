@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import ReactResizeDetector from 'react-resize-detector';
 
 import './App.css';
 import Ranking from './Ranking';
@@ -17,6 +18,11 @@ class App extends Component {
   state = {
     weights: [1,1,1,1,1,1],
     sorted: ranking,
+    gridWidth: 6,
+  }
+
+  _onResize = w => {
+    this.setState({gridWidth: Math.floor(w/(260*0.6))});
   }
 
   changeWeight = (field, val) => {
@@ -40,12 +46,13 @@ class App extends Component {
   }
 
   render() {
-    const {weights,sorted} = this.state;
+    const {weights, sorted, gridWidth} = this.state;
     return (
       <MuiThemeProvider>
         <div className="App">
           <Controls changeWeight={this.changeWeight} weights={weights} sortTAs={this.sortTAs} />
-          <Ranking ranking={sorted} weights={weights} />
+          <Ranking ranking={sorted} weights={weights} gridWidth={gridWidth} />
+          <ReactResizeDetector handleWidth onResize={this._onResize} />
         </div>
       </MuiThemeProvider>
     );

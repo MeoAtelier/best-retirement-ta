@@ -14,18 +14,17 @@ const Controls = ({ changeWeight, weights, sortTAs }) => (
   <div className="controls">
     <div className="labels">
       {labels.map(l => (
-        <div className="control-wrapper">
+        <div className="control-wrapper" key={l}>
           <div style={{paddingBottom: "15px"}}>{l}</div>
         </div>))}
       </div>
         <div className="sliders-header">More Important</div>
       <div className="sliders">
         {weights.map((w,i) => (
-          <div>
+          <div key={i} >
           <div className="slider-wrapper" style={{backgroundColor: colors[i]}}>
             <Slider
               sliderStyle={{selectionColor: colors[i]}}
-              key={i}
               axis="y"
               min={0}
               max={2}

@@ -13,9 +13,9 @@ const petal = (color, angle, val, w) => {
   </g>
 )}
 
-const flower = ({property, rates, burglary, name, sunshine, medical, population}, w, i) => {
-  const x0 = (i % 6) * 260 + 120;
-  const y0 = 300 * Math.floor(i/6) + 150;
+const flower = ({property, rates, burglary, name, sunshine, medical, population}, w, gridWidth, i) => {
+  const x0 = (i % gridWidth) * 260 + 120;
+  const y0 = 300 * Math.floor(i/gridWidth) + 150;
   return (
     <Animate key={name}
       start={() => ({x:x0, y:y0})}
@@ -35,18 +35,19 @@ const flower = ({property, rates, burglary, name, sunshine, medical, population}
   </Animate>
 )}
 
-const Ranking = ({ ranking, weights }) => {
+const Ranking = ({ ranking, weights, gridWidth }) => {
   return (
   <div className="ranking">
-    <svg width="960" height="2000">
-      {ranking.map((r,i) => flower(r, weights, i))}
+    <svg width={gridWidth * (260 * 0.6)} height={Math.ceil(66/gridWidth) * (300*0.6)}>
+      {ranking.map((r,i) => flower(r, weights, gridWidth, i))}
     </svg>
   </div>
 )}
 
 Ranking.propTypes = {
   ranking: PropTypes.array.isRequired,
-  weights: PropTypes.array.isRequired
+  weights: PropTypes.array.isRequired,
+  gridWidth: PropTypes.number.isRequired
 }
 
 export default Ranking
