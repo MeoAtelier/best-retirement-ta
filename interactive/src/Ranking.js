@@ -29,7 +29,7 @@ const flower = ({property, rates, burglary, name, sunshine, medical, population}
       {petal("#98DA7D", 180, medical, w[3])}
       {petal("#5188AE", 240, population, w[4])}
       {petal("#172074", 300, property, w[5])}
-      <circle cx="0" cy="0" r="15" fill="#CCC" />
+      <circle cx="0" cy="0" r="15" fill="#AAA" />
       <text x="0" y="140" textAnchor="middle" fontSize="20px">{name}</text>
     </g>)}
   </Animate>

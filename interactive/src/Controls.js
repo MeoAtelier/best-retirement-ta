@@ -10,19 +10,20 @@ const labels = [ "Low rates", "High sunshine", "Low burglary", "Medical staff",
 "Population over 65",
 "Two bedroom properties" ];
 
-const Controls = ({ changeWeight, weights, sortTAs }) => (
+const Controls = ({ changeWeight, weights, sortTAs, active, activeSlider }) => (
   <div className="controls">
-    <div className="sliders-header">More Important</div>
     <div className="labels">
-      {labels.map(l => (
+      {labels.map((l,i) => (
         <div className="control-wrapper" key={l}>
-          <div style={{paddingBottom: "15px"}}>{l}</div>
+          <div className={active === i ? "active" : ""}>{l}</div>
         </div>))}
       </div>
+    <div className="sliders-header">More Important</div>
       <div className="sliders">
         {weights.map((w,i) => (
           <div key={i} >
-            <div className="slider-wrapper" style={{backgroundColor: colors[i]}}>
+            <div className={"slider-wrapper"}
+              style={{backgroundColor: colors[i]}}>
               <Slider
                 sliderStyle={{selectionColor: colors[i]}}
                 axis="y"
@@ -30,6 +31,7 @@ const Controls = ({ changeWeight, weights, sortTAs }) => (
                 max={2}
                 value={w}
                 onDragStop={sortTAs}
+                onDragStart={() => activeSlider(i)}
                 onChange={(e,v) => changeWeight(i, v)}
               />
             </div>
@@ -44,6 +46,8 @@ const Controls = ({ changeWeight, weights, sortTAs }) => (
 Controls.propTypes = {
   changeWeight: PropTypes.func.isRequired,
   sortTAs: PropTypes.func.isRequired,
+  activeSlider: PropTypes.func.isRequired,
+  active: PropTypes.number.isRequired,
   weights: PropTypes.array.isRequired
 }
 

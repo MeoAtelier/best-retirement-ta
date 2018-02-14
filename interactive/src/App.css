@@ -1,7 +1,7 @@
 .App {
   text-align: center;
-  font-family: 'Roboto';
-  background-color: #DDD;
+  background-color: #C5C5C5;
+  text-align: left;
 }
 
 .App-logo {
@@ -27,4 +27,15 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.first-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.intro {
+  padding: 12px 18px;
+  flex: 1 1 440px;
+  max-width: 700px;
 }
