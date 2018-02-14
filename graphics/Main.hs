@@ -7,6 +7,7 @@ import           Data.Aeson
 import qualified Data.ByteString.Lazy          as BL
 import           Data.Colour.Palette.BrewerSet
 import           Data.Colour.SRGB
+import qualified Data.HashMap.Strict           as HM
 import           Data.List                     (groupBy)
 import           Data.Monoid
 import           Database.PostgreSQL.Simple
@@ -17,6 +18,7 @@ import           Text.Blaze.Svg11              (mkPath, translate, (!))
 import qualified Text.Blaze.Svg11              as S
 import qualified Text.Blaze.Svg11.Attributes   as A
 
+import qualified Export                        as E
 import           TA
 
 ratesColor = reverse $ brewerSet RdYlBu 11
@@ -54,8 +56,8 @@ geo (n, g, c) =
 
 flower ta = do
   let s1 = scl 0 $ 1 - (fromIntegral (rates ta) / 100)
-      s2 = scl 60 $ 1 - (fromIntegral (sunshine ta) / 100)
       s3 = scl 120 $ 1 - (fromIntegral (burglary ta) / 100)
+      s2 = scl 60 $ 1 - (fromIntegral (sunshine ta) / 100)
       s4 = scl 180 $ 1 - (fromIntegral (medical ta) / 100)
       s5 = scl 240 $ 1 - (fromIntegral (population ta) / 100)
       s6 = scl 300 $ 1 - (fromIntegral (property ta) / 100)
@@ -76,12 +78,17 @@ flower ta = do
       stringValue $
       "rotate(" ++ show r ++ "),scale(" ++ show s ++ "," ++ show s ++ ")"
 
+
+dict :: [E.Export] -> HM.HashMap String E.Export
+dict exp = HM.fromList [(E.name y, y) | y <- exp]
+
 main :: IO ()
 main = do
   conn <- connectPostgreSQL "dbname=retirement"
   ta <- query_ conn ta
   taNoG <- query_ conn taNoGeom
   taSmallG <- query_ conn taSmallGeom
+  exp <- query_ conn E.export
   doc overall overallColor "overall" ta
   doc overall overallColor "overall-small" taSmallG
   doc rates ratesColor "rates" ta
@@ -105,6 +112,7 @@ main = do
            flower y)
   BL.writeFile ("interactive" </> "src" </> "ranking-data.json") $ encode taNoG
   BL.writeFile ("interactive" </> "src" </> "map.json") $ encode taSmallG
+  BL.writeFile ("interactive" </> "src" </> "values.json") $ encode $ dict exp
   where
     doc acc col fn a =
       BL.writeFile ("print" </> fn ++ ".svg") $

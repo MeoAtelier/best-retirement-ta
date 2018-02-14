@@ -1,6 +1,6 @@
 { mkDerivation, aeson, base, blaze-markup, blaze-svg, bytestring
 , colour, double-conversion, filepath, palette, postgresql-simple
-, stdenv
+, stdenv, unordered-containers
 }:
 mkDerivation {
   pname = "graphics";
@@ -11,6 +11,7 @@ mkDerivation {
   executableHaskellDepends = [
     aeson base blaze-markup blaze-svg bytestring colour
     double-conversion filepath palette postgresql-simple
+    unordered-containers
   ];
   license = stdenv.lib.licenses.bsd3;
 }
