@@ -30,16 +30,20 @@ r_version <- "3.4.3"
 
 ## Intro
 
-This is a playful analysis that ranks New Zealand's Territorial Authorities based
+This is a playful analysis that ranks New Zealand's Territorial Authorities (TAs) based
 on which one is the best location to retire. The interactive is [here](http://insights.nzherald.co.nz/article/best-retirement-area/)
 
 This is the first release of data and methods by the _New Zealand Herald's_ data journalism team.
 The release is made to both enable transparency and provide resources for others interested
 in data analysis in New Zealand. Please submit any comments or corrections as GitHub issues on
-the projects [GitHub page](https://github.com/nzherald/best-retirement-ta)
+the project's [GitHub page](https://github.com/nzherald/best-retirement-ta)
 
-The code used in the analysis here should work on Linux and OS X machines with the
-appropriated dependencies installed. But it is unlikely to work on a Windows computer.
+The code used in the analysis here should work on Linux and OS X machines.
+But it is unlikely to work on a Windows computer.
+
+Due to the large differences in population and area with New Zealand's TAs
+comparisons between them so not always make sense. However for this analysis, TAs
+were the most practical subdivision of New Zealand.
 
 ## Datasets
 
@@ -114,7 +118,7 @@ The data used is [here](http://insights.nzherald.co.nz/data/best-retirement-area
 
 ## Data analysis
 
-The overall analysis was very simple. The goal was to rank each TA according to the 6 criteria
+The overall analysis was overlly sophisticated. Each TA was ranked according to the 6 criteria
 outlined above and then then calculated the average rank for each TA. In the cases were multiple
 data contributed to a single criteria then each of those datasets where ranked and the average 
 rank calculated.
