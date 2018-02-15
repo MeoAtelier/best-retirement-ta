@@ -34,7 +34,7 @@ const colorMap = rank => {
   return scale[col];
 }
 
-const Map = ({ranking,width}) => {
+const Map = ({ranking,width,showDetail}) => {
   const ranks = fromPairs(map(ranking, (d,i) => ([d.name, i])))
   const w = Math.min(400,width);
   return (
@@ -42,7 +42,7 @@ const Map = ({ranking,width}) => {
       <svg width={w} height={w*1.5} viewBox="0 -14463 10019 14463">
         {tas.map(({geom, name}) => {
           return (
-          <path key={name} d={geom} fill={colorMap(ranks[name])}/>
+            <path onClick={() => showDetail(name)} key={name} d={geom} fill={colorMap(ranks[name])}/>
         )})}
       </svg>
       
@@ -63,7 +63,8 @@ const Map = ({ranking,width}) => {
 
 Map.propTypes = {
   ranking: PropTypes.array.isRequired,
-  width: PropTypes.number.isRequired
+  width: PropTypes.number.isRequired,
+  showDetail: PropTypes.func.isRequired
 }
 
 export default Map;
