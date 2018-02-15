@@ -18,7 +18,6 @@ export default class DialogExampleSimple extends React.Component {
 
   render() {
     const { selected, hideDetail } = this.props;
-        console.log(selected);
     const actions = [
       <FlatButton
         label="Close"
