@@ -2,7 +2,7 @@
 db := retirement
 psql := psql -d $(db) --set ON_ERROR_STOP=1
 
-.PHONY: all 
+.PHONY: all upload
 
 all: analysis/main.html
 
@@ -21,36 +21,29 @@ all: analysis/main.html
 	.o/rates \
 	.o/dwellings \
 	.o/two-bedroom \
+	.o/sunshine \
 	.o/crime
 	rm -rf analysis/main_cache
 	touch $@
 
 
-analysis/main.html: analysis/main.Rmd .o/load
+analysis/main.html: analysis/main.Rmd .o/orig
 	Rscript -e 'library(rmarkdown); rmarkdown::render("analysis/main.Rmd", "html_document")' --vanilla
 
-orig: .o/district-health-board-2015 \
-	.o/ta2017_gv_clipped \
-	.o/au2017_gv_clipped \
-	.o/pop-ta \
-	.o/pop-dhb \
-	.o/pop-au \
+.o/orig: .o/gis .o/load \
 	.o/dhb-ta-overlap \
-	.o/healthcare_professionals_per100kpop \
 	.o/healthcare_professionals \
-	.o/2017_Areas_Table \
-	.o/rates \
-	.o/dwellings \
 	.o/avg-rates \
 	.o/over-65 \
-	.o/sunshine \
 	.o/ta-sunshine \
 	.o/rank \
-	.o/two-bedroom \
-	.o/crime
+	.o/crime-percapita
 	$(psql) -f analysis/export.sql
 	graphics
+	touch $@
 
+upload: analysis/main.html
+	./upload.sh
 
 .o/sunshine: analysis/sunshine/sunshine-hours-annual-average-1972-2013_1.tif .o/db
 	$(psql) -c 'DROP TABLE IF EXISTS sunshine CASCADE;'
