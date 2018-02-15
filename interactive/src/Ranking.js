@@ -13,7 +13,7 @@ const petal = (color, angle, val, w) => {
   </g>
 )}
 
-const flower = ({property, rates, burglary, name, sunshine, medical, population}, w, gridWidth, i) => {
+const flower = ({property, rates, burglary, name, sunshine, medical, population}, w, gridWidth, i, showDetail) => {
   const x0 = (i % gridWidth) * 260 + 130;
   const y0 = 300 * Math.floor(i/gridWidth) + 150;
   return (
@@ -22,7 +22,7 @@ const flower = ({property, rates, burglary, name, sunshine, medical, population}
       update={() => ({x:[x0], y:[y0], timing: {ease: easeExpOut, duration:2000 }})}
     >
       {({x,y}) => (
-    <g transform={`scale(0.6,0.6),translate(${x},${y})`}>
+        <g onClick={() =>showDetail(name)} transform={`scale(0.6,0.6),translate(${x},${y})`}>
       {petal("#7F2222", 0, rates, w[0])}
       {petal("#F3F396", 60, sunshine, w[1])}
       {petal("#A05D43", 120, burglary, w[2])}
@@ -35,11 +35,11 @@ const flower = ({property, rates, burglary, name, sunshine, medical, population}
   </Animate>
 )}
 
-const Ranking = ({ ranking, weights, gridWidth }) => {
+const Ranking = ({ ranking, weights, gridWidth, showDetail }) => {
   return (
   <div className="ranking">
     <svg width={gridWidth * (260 * 0.6)} height={Math.ceil(66/gridWidth) * (300*0.6)}>
-      {ranking.map((r,i) => flower(r, weights, gridWidth, i))}
+      {ranking.map((r,i) => flower(r, weights, gridWidth, i, showDetail))}
     </svg>
   </div>
 )}
@@ -47,7 +47,8 @@ const Ranking = ({ ranking, weights, gridWidth }) => {
 Ranking.propTypes = {
   ranking: PropTypes.array.isRequired,
   weights: PropTypes.array.isRequired,
-  gridWidth: PropTypes.number.isRequired
+  gridWidth: PropTypes.number.isRequired,
+  showDetail: PropTypes.func.isRequired
 }
 
 export default Ranking

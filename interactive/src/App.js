@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 
+
 import ReactResizeDetector from 'react-resize-detector';
 
 import './App.css';
 import Ranking from './Ranking';
 import Controls from './Controls';
 import Map from './Map';
+import Popup from './Popup';
 
 import ranking from './ranking-data.json';
+import detail from './values.json';
 
 
 const muiTheme = getMuiTheme({
@@ -31,7 +34,8 @@ class App extends Component {
     sorted: ranking,
     gridWidth: 6,
     width: 320,
-    active: -1
+    active: -1,
+    selected: null
   }
 
   _onResize = w => {
@@ -62,8 +66,16 @@ class App extends Component {
       })});
   }
 
+  showDetail = area => {
+    this.setState({selected: detail[area]});
+  }
+
+  hideDetail = () => {
+    this.setState({selected: null});
+  }
+
   render() {
-    const {weights, sorted, gridWidth,width,active} = this.state;
+    const {weights, sorted, gridWidth,width,active,selected} = this.state;
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
         <div className="App">
@@ -83,7 +95,7 @@ class App extends Component {
               <p>Use the sliders to increase or decrease the importance of a category and see how the rankings change.</p>
       <p>Original data and details of the analysis are available <a href="http://insights.nzherald.co.nz/data/best-retirement-area/index.html">here</a>.</p>
             </div>
-            <Map ranking={sorted} width={width} />
+            <Map ranking={sorted} width={width} showDetail={this.showDetail} />
           </div>
           <Controls
             changeWeight={this.changeWeight}
@@ -91,7 +103,8 @@ class App extends Component {
             active={active}
             activeSlider={this.activeSlider}
             sortTAs={this.sortTAs} />
-          <Ranking ranking={sorted} weights={weights} gridWidth={gridWidth} />
+          <Ranking ranking={sorted} weights={weights} gridWidth={gridWidth} showDetail={this.showDetail} />
+          <Popup selected={selected} hideDetail={this.hideDetail} />
           <ReactResizeDetector handleWidth onResize={this._onResize} />
         </div>
       </MuiThemeProvider>
