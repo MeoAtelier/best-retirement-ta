@@ -92,7 +92,7 @@ class App extends Component {
                 </ul>
               <p>Each area was ranked according to these criteria and then the average rank across the six criteria was used to calculate the overall rank.</p>
               <p>The overall ranks are shown on the map, and the flower-like visual shows how each area ranked across the six categories.</p>
-              <p>Use the sliders to increase or decrease the importance of a category and see how the rankings change.</p>
+              <p>Use the sliders to increase or decrease the importance of a category and see how the rankings change. Or click on a region or flower to see the underlying values.</p>
               <p>A a full article is <a href="http://www.nzherald.co.nz/business/news/article.cfm?c_id=3&objectid=11992596">here</a>. Original data and details of the analysis are available <a href="http://insights.nzherald.co.nz/data/best-retirement-area/index.html">here</a>.</p>
             </div>
             <Map ranking={sorted} width={width} showDetail={this.showDetail} />
