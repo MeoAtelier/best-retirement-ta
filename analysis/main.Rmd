@@ -1,6 +1,6 @@
 ---
-title: "New Zeland's Best Retirement Locations"
-author: "New Zeland Herald, Chris Knox (chris.knox@nzherald.co.nz)"
+title: "New Zealand's Best Retirement Locations"
+author: "New Zealand Herald, Chris Knox (chris.knox@nzherald.co.nz)"
 date: "February 2018"
 output:
   html_document:
@@ -31,7 +31,7 @@ r_version <- "3.4.3"
 ## Intro
 
 This is a playful analysis that ranks New Zealand's Territorial Authorities based
-on which one is the best location to retire.
+on which one is the best location to retire. The interactive is [here](http://insights.nzherald.co.nz/article/best-retirement-area/)
 
 This is the first release of data and methods by the _New Zealand Herald's_ data journalism team.
 The release is made to both enable transparency and provide resources for others interested
@@ -45,12 +45,12 @@ appropriated dependencies installed. But it is unlikely to work on a Windows com
 
 The following datasets were used:
 
-– Average rates paid in 2016 
-– Burglaries per capita in 2017
-– The average annual sunshine between 1973 and 2013
-– The proportion and size of the current population that is over 65
-– The number of DHB staff per capita in 2017
-– The cost and availability of 2 bedroom properties in 2017
+- Average rates paid in 2016 
+- Burglaries per capita in 2017
+- The average annual sunshine between 1973 and 2013
+- The proportion and size of the current population that is over 65
+- The number of DHB staff per capita in 2017
+- The cost and availability of 2 bedroom properties in 2017
 
 ### Data sources
 
@@ -66,7 +66,7 @@ accessed directly via [https://www.stats.govt.nz/](https://www.stats.govt.nz/)
 
 ### Burglaries
 
-The number of burlaries per capita for each Teritorial Authority were calculated from:
+The number of burglaries per capita for each Teritorial Authority were calculated from:
 
 - [Victimisation Time and Place](https://www.police.govt.nz/about-us/publications-statistics/data-and-statistics/policedatanz/victimisation-time-and-place)
 - [Subnational population estimates](http://nzdotstat.stats.govt.nz/wbos/Index.aspx?DataSetCode=TABLECODE7502)
@@ -213,10 +213,10 @@ The process was:
 - Assume that DHB staff are spread equally across all Area Units (which they certainly are not)
   and estimate a DHB staff per area unit value.
 - Where an area unit is in multiple DHBs calculate a fraction of the population that in each
-  DHB using the Area Unit and DHB geographies. This fraciton is used to weight the contribution
+  DHB using the Area Unit and DHB geographies. This fraction is used to weight the contribution
   of each DHB to the estimated number of staff in the Area Unit
 - Sum up the DHB staff in each TA from the Area Units
-- Divide the estiamted DHB staff for each TA by the population of the TA.
+- Divide the estimated DHB staff for each TA by the population of the TA.
 
 https://github.com/nzherald/best-retirement-ta/blob/master/analysis/dhb-ta-overlap.sql
 
