@@ -16,35 +16,211 @@ output:
 subtitle: Preprocessing
 ---
 
-```{r setup, include=FALSE,cache=TRUE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(RPostgreSQL)
 drv <- dbDriver("PostgreSQL")
 db <- dbConnect(drv, dbname='retirement')
 ```
 
-```{r, echo=FALSE,cache=TRUE}
+```{r, echo=FALSE}
 project_name <- "best-retirement-ta"
 r_version <- "3.4.3"
 ```
 
 ## Intro
 
-This is a playful analysis that attempts to rank New Zealand's Territorial Authorities based
+This is a playful analysis that ranks New Zealand's Territorial Authorities based
 on which one is the best location to retire.
 
+This is the first release of data and methods by the _New Zealand Herald's_ data journalism team.
+The release is made to both enable transparency and provide resources for others interested
+in data analysis in New Zealand. Please submit any comments or corrections as GitHub issues on
+the projects [GitHub page](https://github.com/nzherald/best-retirement-ta)
 
-## Dependencies
+The code used in the analysis here should work on Linux and OS X machines with the
+appropriated dependencies installed. But it is unlikely to work on a Windows computer.
 
-### Nix
+## Datasets
 
-    curl https://nixos.org/nix/install | sh
+The following datasets were used:
 
-## Data loading
+– Average rates paid in 2016 
+– Burglaries per capita in 2017
+– The average annual sunshine between 1973 and 2013
+– The proportion and size of the current population that is over 65
+– The number of DHB staff per capita in 2017
+– The cost and availability of 2 bedroom properties in 2017
 
-```{sql, connection=db,cache=TRUE}
-DROP MATERIALIZED VIEW IF EXISTS dhb_au_overlap CASCADE;
+### Data sources
 
+#### Average Rates
+
+The average annual rates in each TA were calculated from:
+
+- [local authority rates income.xlsx](http://insights.nzherald.co.nz/data/best-retirement-area/local%20authority%20rates%20income.xlsx)
+- [households by council district for 2013.xlsx](http://insights.nzherald.co.nz/data/best-retirement-area/households%20by%20council%20district%20for%202013.xlsx)
+
+These spreadsheets where provided to the _New Zealand Herald_ by _StatsNZ_. But the data can also be
+accessed directly via [https://www.stats.govt.nz/](https://www.stats.govt.nz/)
+
+### Burglaries
+
+The number of burlaries per capita for each Teritorial Authority were calculated from:
+
+- [Victimisation Time and Place](https://www.police.govt.nz/about-us/publications-statistics/data-and-statistics/policedatanz/victimisation-time-and-place)
+- [Subnational population estimates](http://nzdotstat.stats.govt.nz/wbos/Index.aspx?DataSetCode=TABLECODE7502)
+
+Unfortunately it was necessary to manually copy the number of _Unlawful Entry With Intent/Burglary, Break and Enter_ incidents for each
+TA. This data is [here](http://insights.nzherald.co.nz/data/best-retirement-area/crime.csv)
+
+The extract of the _Subnational population estimates_ used is [here](http://insights.nzherald.co.nz/data/best-retirement-area/TABLECODE7502_Data_9020e02b-f4ab-4585-8f88-31df25edc974.csv)
+
+### Sunshine
+
+The average annual sunshine per TA was calculated using:
+
+- [Sunshine hours: annual average 1972-2013](https://data.mfe.govt.nz/layer/53313-sunshine-hours-annual-average-1972-2013/)
+- [Geographic Boundary files](http://archive.stats.govt.nz/browse_for_stats/Maps_and_geography/Geographic-areas/digital-boundary-files.aspx)
+
+### Population over 65
+
+The proportion of the population over 65 was drawn from:
+
+- [Subnational population estimates](http://nzdotstat.stats.govt.nz/wbos/Index.aspx?DataSetCode=TABLECODE7502)
+
+The extract of the _Subnational population estimates_ used is [here](http://insights.nzherald.co.nz/data/best-retirement-area/TABLECODE7502_Data_9020e02b-f4ab-4585-8f88-31df25edc974.csv)
+
+### DHB Staff per capita
+
+The DHB staff per capita for each TA were estimated from the DHB Staff per capita for each DHB. 
+
+The data used were:
+
+- [Population density by workforce and DHB - Data Request - 7022018NZ Herald.pdf](http://insights.nzherald.co.nz/data/best-retirement-area/Population%20density%20by%20workforce%20and%20DHB%20-%20Data%20Request%20-%207022018NZ%20Herald.pdf)
+- [Subnational population estimates - TA/AU](http://nzdotstat.stats.govt.nz/wbos/Index.aspx?DataSetCode=TABLECODE7502)
+- [Subnational population estimates - DHB](http://nzdotstat.stats.govt.nz/wbos/Index.aspx?DataSetCode=TABLECODE7509)
+- [Geographic Boundary files](http://archive.stats.govt.nz/browse_for_stats/Maps_and_geography/Geographic-areas/digital-boundary-files.aspx)
+
+The DHB population estimates are [here](http://insights.nzherald.co.nz/data/best-retirement-area/TABLECODE7509_Data_2a83a026-d55e-4a9b-9fea-29dcb037dd98.csv)
+and the area unit population estimates are [here](http://insights.nzherald.co.nz/data/best-retirement-area/TABLECODE7502_Data_50c3f259-7cb0-4c27-a889-93aa4577ae57.csv)
+
+### Two bedroom property cost and availability
+
+The estimated median value, the total number of properties, the median sale price in 2017 and the
+number of properties sold in to 2017 were provided to the _New Zealand Herald_ by [CoreLogic](http://www.qv.co.nz/).
+
+The data used is [here](http://insights.nzherald.co.nz/data/best-retirement-area/Two%20Bedroom%20Stats%2020180209.xlsx).
+
+## Data analysis
+
+The overall analysis was very simple. The goal was to rank each TA according to the 6 criteria
+outlined above and then then calculated the average rank for each TA. In the cases were multiple
+data contributed to a single criteria then each of those datasets where ranked and the average 
+rank calculated.
+
+### Data loading
+
+All datasets are loaded into a PostgreSQL database. This process is managed via a
+[makefile](https://github.com/nzherald/best-retirement-ta/blob/master/makefile).
+If you checkout the
+source code of this project, and have PostgreSQL installed just run
+`make .o/load` - __DO NOT do this if you have a database called `retirement` already__
+
+The loading steps just import the shape, raster and CSV files into a database. All
+subsequent analysis is carried out within the database and the SQL scripts are included
+here for reference.
+
+
+### Average Rates, Burglary per capita, and population over 65
+
+These calculations were all simple and can be seen here:
+
+[__Rates__](https://github.com/nzherald/best-retirement-ta/blob/master/analysis/avg-rates.sql)
+
+```{sql, eval=FALSE}
+CREATE TABLE rates AS
+SELECT d.ta, round(r.y2016 * 1e3 / d.count) as avg_rates
+FROM dwellings d
+JOIN total_rates r
+  ON lower(d.ta) = lower(replace(r.ta, ' Council', ''))
+;
+```
+
+[__Burglary__](https://github.com/nzherald/best-retirement-ta/blob/master/analysis/crime-percapita.sql)
+```{sql, eval=FALSE}
+CREATE OR REPLACE VIEW crime_percap AS
+SELECT c.ta, round(c.burglary / value * 100000) AS burglary
+FROM crime c
+LEFT join ta_pop p
+  ON lower(c.ta) = lower(p.area)
+WHERE age = 'Total people, age'
+  AND year = '2017'
+  ;
+```
+
+
+[__Over 65__](https://github.com/nzherald/best-retirement-ta/blob/master/analysis/over-65.sql)
+
+```{sql, eval=FALSE}
+
+CREATE OR REPLACE VIEW over65 AS
+SELECT r.area as ta, r.value as over65_pop, round(r.value / t.value * 100,1) as over65_pc
+FROM ta_pop r
+JOIN ta_pop t
+  ON r.area = t.area
+  AND r.year = t.year
+JOIN rates rr ON
+  lower(rr.ta) = lower(t.area) -- JUST filter out boards 
+WHERE r.age = '65 years and over'
+  AND t.age = 'Total people, age'
+  AND r.year = '2016'
+;
+```
+
+
+### Two bedroom properties
+
+No actual calculation was needed for this data.
+
+### [Sunshine](https://github.com/nzherald/best-retirement-ta/blob/master/analysis/ta-sunshine.sql)
+
+PostGIS was used to clip the national sunshine data provided by MfE to each TA
+and then extract the average value across the TA.
+
+```{sql, eval=FALSE}
+CREATE MATERIALIZED VIEW ta_sunshine AS 
+WITH _s AS (
+  SELECT ta2017_nam, st_summarystats(st_clip(rast, geom)) aS stats
+  FROM ta2017_gv_clipped, sunshine
+)
+SELECT ta2017_nam, round((stats).mean) AS mean
+FROM _s
+WHERE ta2017_nam != 'Area Outside Territorial Authority'
+;
+```
+
+
+### DHB staff
+
+This is probably the weakest and most complicated portion of the analysis. It is also the
+portion of the analysis that may be best replaced with some other measure.
+
+The process was:
+
+- Use DHB population to calculate a nominal number of DHB employees based on the employees per
+  capita.
+- Assume that DHB staff are spread equally across all Area Units (which they certainly are not)
+  and estimate a DHB staff per area unit value.
+- Where an area unit is in multiple DHBs calculate a fraction of the population that in each
+  DHB using the Area Unit and DHB geographies. This fraciton is used to weight the contribution
+  of each DHB to the estimated number of staff in the Area Unit
+- Sum up the DHB staff in each TA from the Area Units
+- Divide the estiamted DHB staff for each TA by the population of the TA.
+
+https://github.com/nzherald/best-retirement-ta/blob/master/analysis/dhb-ta-overlap.sql
+
+```{sql, eval=FALSE}
 CREATE MATERIALIZED VIEW dhb_au_overlap AS
 WITH _a AS (
 SELECT 
@@ -58,10 +234,189 @@ WHERE dhb2015_na != 'Area outside District Health Board'
 )
 SELECT *, rank() over (partition by au order by overlap)
 FROM _a
-where overlap > 0;
-
-SELECT * FROM dhb_au_overlap
+where overlap > 0
 ;
 ```
+
+https://github.com/nzherald/best-retirement-ta/blob/master/analysis/healthcare_professionals.sql
+
+```{sql, eval=FALSE}
+CREATE OR REPLACE VIEW healthcare_professionals_nominal AS
+SELECT 
+    p.dhb
+  , p.all_staff * d.value / 100000 as all_staff
+  , p.senior_medical * d.value / 100000 as senior_medical
+  , p.junior_medical * d.value / 100000 as junior_medical
+  , p.care_support * d.value / 100000 as care_support
+  , p.nurses * d.value / 100000 as nurses
+  , p.allied * d.value / 100000 as allied
+  , d.value AS population
+FROM healthcare_professionals p
+LEFT JOIN dhb_pop d
+  ON p.dhb = d.area
+WHERE age = 'Total people, age'
+AND year = '2016'
+;
+
+CREATE OR REPLACE VIEW healthcare_au AS
+WITH _pop AS (
+  SELECT au.*, p.value AS au_pop, d.value AS dhb_pop,
+  p.value / d.value * overlap as weight
+  FROM dhb_au_overlap au
+  JOIN au_pop p
+    ON au.au = p.area
+  JOIN dhb_pop d
+    ON au.dhb2015_na = d.area
+  WHERE d.year = '2016'
+    AND d.age = 'Total people, age'
+)
+SELECT h.dhb
+  , a.au
+  , a.au_pop
+  , all_staff * weight as all_staff
+  , senior_medical * weight as senior_medical
+  , junior_medical * weight as junior_medical
+  , care_support * weight as care_support
+  , nurses * weight as nurses
+  , allied * weight as allied
+FROM _pop a
+INNER JOIN healthcare_professionals_nominal h
+  ON a.dhb2015_na = h.dhb
+;
+
+CREATE OR REPLACE VIEW healthcare_ta_nominal AS
+SELECT ta2017_label
+  , sum(all_staff) AS all_staff
+  , sum(senior_medical) AS senior_medical
+  , sum(junior_medical) AS junior_medical
+  , sum(care_support) AS care_support
+  , sum(nurses) AS nurses
+  , sum(allied) AS allied
+FROM healthcare_au a
+INNER JOIN ta_au_lookup l
+  ON a.au = l.au
+GROUP BY ta2017_label
+;
+
+CREATE OR REPLACE VIEW healthcare_ta_percap AS
+WITH _pop AS (
+  SELECT area, value
+  FROM ta_pop
+  WHERE year = '2016' and age = 'Total people, age'
+)
+SELECT ta2017_label
+  , round(all_staff / p.value::numeric * 100000) as all_staff
+  , round(senior_medical / p.value::numeric * 100000) as senior_medical
+  , round(junior_medical / p.value::numeric * 100000) as junior_medical
+  , round(care_support / p.value::numeric * 100000) as care_support
+  , round(nurses / p.value::numeric * 100000) as nurses
+  , round(allied / p.value::numeric * 100000) as allied
+FROM healthcare_ta_nominal
+JOIN _pop p on lower(area) = lower(ta2017_label)
+WHERE ta2017_label not in ('Chatham Islands Territory')
+;
+```
+
+
+
+## Ranking
+
+The rankings were as follows:
+
+__Rates__
+
+- Rank ascending based on average rates
+
+__Burglary__
+
+- Rank ascending based on burglaries per capita
+
+__Sunshine__
+
+- Rank descending based on sunshine hours
+
+__Population__
+
+- Rank descending based on proportion of population over 65
+- Rank descending based on total size of population over 65
+
+__Two bedroom property__
+
+- Rank ascending based on median value
+- Rank descending based on total properties
+- Rank ascending based on median price in 2017
+- Rank descending based on volume of sales in 2017
+
+__DHB Staff__
+
+- Ranks descending on total staff per capita
+- Ranks descending on senior medical staff per capita
+- Ranks descending on junior medical staff per capita
+- Ranks descending on care and support staff per capita
+- Ranks descending on nursing staff per capita
+- Ranks descending on allied and scientific staff per capita
+
+
+```{sql, eval=FALSE}
+CREATE or replace view health_rank AS
+WITH _r AS (
+  SELECT ta2017_label
+   , rank() over (order by all_staff desc) as all_staff
+   , rank() over (order by senior_medical desc) as senior_medical
+   , rank() over (order by junior_medical desc) as junior_medical
+   , rank() over (order by care_support desc) as care_support
+   , rank() over (order by nurses desc) as nurses
+   , rank() over (order by allied desc) as allied
+  FROM healthcare_ta_percap
+)
+select ta2017_label as ta, rank() over (order by (all_staff + senior_medical + junior_medical + care_support + nurses + allied)::numeric / 6)
+FROM _r;
+
+create or replace view over65_rank as
+with _inner as (
+  select ta, rank() over (order by over65_pop desc) as pop, rank() over (order by over65_pc desc) as pc
+  from over65
+)
+select ta, rank() over (order by pop + pc)
+from _inner;
+
+create or replace view property_rank as
+with _inner as (
+  select name as ta
+  , rank() over (order by total_sales_in_2017 desc) as sales
+  , rank() over (order by median_sales_price) as price
+  , rank() over (order by total_properties desc) as total
+  , rank() over (order by median_value) as value
+  FROM two_bedroom
+)
+SELECT *, rank() over (order by (sales + price + total + value)::numeric / 4)
+FROM _inner;
+
+create or replace view rank as
+with _inner AS (
+select r.ta
+  , rank() over (order by avg_rates) as rates
+  , rank() over (order by mean desc) as sunshine
+  , rank() over (order by burglary) as burglary
+  , o.rank as over65
+  , h.rank as health
+  , p.rank as property
+from rates r
+left join ta_sunshine s
+  on r.ta = s.ta2017_nam
+left join over65_rank o
+  on lower(r.ta) = lower(o.ta)
+left join health_rank h
+  on r.ta = h.ta
+left join property_rank p
+  on r.ta = p.ta
+left join crime_percap c
+  ON lower(r.ta) = lower(c.ta)
+)
+select *, rank() over (order by (rates + sunshine + over65 + health + property + burglary)::numeric / 6) as overall
+from _inner
+;
+```
+
 
 
